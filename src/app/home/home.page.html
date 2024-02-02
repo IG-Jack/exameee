@@ -1,20 +1,53 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Blank
+      Pokémon App
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card class="sty">
+    <ion-card-header>
+      <ion-card-title>
+        ID del Pokémon
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">ID del Pokémon</ion-label>
+        <ion-input type="number" [(ngModel)]="pokemonId"></ion-input>
+      </ion-item>
+      <ion-label *ngIf="nombrePokemon" class="r">Nombre obtenido: {{ nombrePokemon }}</ion-label>
+      
+      
+      <img *ngIf="pokemonImageURL" [src]="pokemonImageURL" alt="Imagen del Pokémon" style="text-align: center">
+   <br/>
+      <ion-button (click)="mostrarNombre()">Mostrar Nombre</ion-button>
+    </ion-card-content>
+  </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-card class="style">
+    <ion-card-header>
+      <ion-card-title>
+        Nombre del Pokémon
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Nombre del Pokémon</ion-label>
+        <ion-input type="text" [(ngModel)]="pokemonName"></ion-input>
+      </ion-item>
+     
+      
+      
+      <img *ngIf="pokemonImageURL1" [src]="pokemonImageURL1" alt="Imagen del Pokémon" style="text-align: center">
+      
+      <br/> 
+           <ion-label *ngIf="nombrePokemon1" class="r">Numero de Id del Pokemon: {{ pokemonId1 }}</ion-label>
+
+      <br/>
+      <ion-button (click)="mostrarDatos()">Buscar</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

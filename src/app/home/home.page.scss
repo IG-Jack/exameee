@@ -1,27 +1,14 @@
-#container {
-  text-align: center;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* Establecer el ancho de cada tarjeta para que ocupe la mitad de la pantalla */
+ion-card {
+  width: calc(50% - 10px); /* Ancho del 50% con un margen de 10px entre ellas */
+  margin: 0 5px; /* Margen entre las tarjetas */
+  display: inline-block; /* Para que aparezcan en la misma fila */
+  box-sizing: border-box; 
+
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.r{
+  text-align: left;
+  width:100%;
 }
