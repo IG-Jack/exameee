@@ -7,26 +7,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card class="sty">
-    <ion-card-header>
-      <ion-card-title>
-        ID del Pokémon
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">ID del Pokémon</ion-label>
-        <ion-input type="number" [(ngModel)]="pokemonId"></ion-input>
-      </ion-item>
-      <ion-label *ngIf="nombrePokemon" class="r">Nombre obtenido: {{ nombrePokemon }}</ion-label>
-      
-      
-      <img *ngIf="pokemonImageURL" [src]="pokemonImageURL" alt="Imagen del Pokémon" style="text-align: center">
-   <br/>
-      <ion-button (click)="mostrarNombre()">Mostrar Nombre</ion-button>
-    </ion-card-content>
-  </ion-card>
-
+ 
   <ion-card class="style">
     <ion-card-header>
       <ion-card-title>
@@ -44,10 +25,24 @@
       <img *ngIf="pokemonImageURL1" [src]="pokemonImageURL1" alt="Imagen del Pokémon" style="text-align: center">
       
       <br/> 
-           <ion-label *ngIf="nombrePokemon1" class="r">Numero de Id del Pokemon: {{ pokemonId1 }}</ion-label>
+           <ion-label *ngIf="nombrePokemon1" class="r">Numero de Id del Pokemons: {{ pokemonId1 }}</ion-label>
 
       <br/>
+      <ion-label *ngFor="let type of pokemonType">Tipo: {{ type }}</ion-label>
+
+<br/>
       <ion-button (click)="mostrarDatos()">Buscar</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+
+
+
+
+
+
+
+
+
+

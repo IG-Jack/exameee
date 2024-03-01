@@ -55,9 +55,22 @@ export class PokeapiService {
     );
   }
 
-  // Método para obtener la imagen de un objeto Pokémon por su nombre
   getObjectImageByName(objectName: string): Observable<string> {
     return this.http.get<any>(`${this.apiUrl}item/${objectName}`).pipe(
-      map(data => data.sprites.default)  // Asumiendo que la URL de la imagen se encuentra en la propiedad 'sprites.default'
+      map(data => data.sprites.default)  
     );
-  } }
+  } 
+ 
+
+  getPokemonType(objectId: number): Observable<string[]> { 
+    return this.http.get<any>(`${this.apiUrl}pokemon/${objectId}`).pipe(
+      map(data => data.types.map((types: any) => types.type.name))
+    );
+  }
+
+}
+
+
+
+  
+
