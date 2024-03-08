@@ -5,44 +5,35 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content style="height: auto;">
+  <div class="background-container">
+    <ion-card class="style">
+      <ion-card-header>
+        <ion-card-title>
+          Información del Pokémon
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Nombre o Id del Pokémon</ion-label>
+          <ion-input type="text" [(ngModel)]="pokemonNameOrId"></ion-input>
+        </ion-item>
+        <div style="width: 100%;height: auto ;text-align: center;align-items: center;"> 
+        <img *ngIf="pokemonImageURL" [src]="pokemonImageURL" alt="Imagen del Pokémon" style="text-align: center; height: 150px; width: auto;">
+      </div>
+        <ion-label *ngIf="nombrePokemon || pokemonId">
+          <br />
+          <ion-label *ngIf="nombrePokemon">Número de Id del Pokémon: {{ pokemonId }}</ion-label>
+          <br />
+          <ion-label *ngIf="!nombrePokemon && pokemonId">ID del Pokémon: {{ pokemonId }}</ion-label>
+          <br />
+          <ion-label *ngIf="nombrePokemon">Nombre: {{ nombrePokemon }}</ion-label>
+          <br />
+          <ion-label *ngFor="let type of pokemonType">Tipo: {{ type }} <br/></ion-label>
+        </ion-label>
 
-<ion-content class="ion-padding">
- 
-  <ion-card class="style">
-    <ion-card-header>
-      <ion-card-title>
-        Nombre del Pokémon
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Nombre del Pokémon</ion-label>
-        <ion-input type="text" [(ngModel)]="pokemonName"></ion-input>
-      </ion-item>
-     
-      
-      
-      <img *ngIf="pokemonImageURL1" [src]="pokemonImageURL1" alt="Imagen del Pokémon" style="text-align: center">
-      
-      <br/> 
-           <ion-label *ngIf="nombrePokemon1" class="r">Numero de Id del Pokemons: {{ pokemonId1 }}</ion-label>
-
-      <br/>
-      <ion-label *ngFor="let type of pokemonType">Tipo: {{ type }}</ion-label>
-
-<br/>
-      <ion-button (click)="mostrarDatos()">Buscar</ion-button>
-    </ion-card-content>
-  </ion-card>
+        <ion-button (click)="mostrarYEnviarDatos()">Buscar y Enviar a Firebase</ion-button> <!-- Botón combinado para buscar y enviar datos a Firebase -->
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
-
-
-
-
-
-
-
-
-
-
-

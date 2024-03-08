@@ -1,64 +1,107 @@
+
+
+
 import { PokeapiService } from './../Services/apiservice.service';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {  
-  pokemonId: number = 1;
-  nombrePokemon: string = "";
+export class HomePage {
+  pokemonNameOrId: string = "";
   pokemonImageURL: string = "";
-  pokemonName: string = "bulbasaur";
-  nombrePokemon1: string = "";
-  pokemonImageURL1: string = "";
-  pokemonId1: number = 1;
-  id: number = 1;
+  nombrePokemon: string = "";
+  pokemonId: number = 0;
   pokemonType: string[] = [];
-  
-  public pokemon: any;
 
-  constructor(private api: PokeapiService ) {}
+  private ruta: any; 
+  private rutaLed2: any; 
+  private rutaLed3: any; 
 
-  getPokemonDataID() {
-    this.api.getPokemonID(this.pokemonId).subscribe((response => {
-      this.pokemon = response.name;
-      this.nombrePokemon = this.pokemon;
+  constructor(private api: PokeapiService,private firestore: Firestore) {
 
-      this.api.getPokemonImageURL(this.pokemonId).subscribe((imageResponse => {
-        this.pokemonImageURL = imageResponse;
-        console.log(this.pokemon);
-      }), (error) => {  
-        console.log(error);
-      });
-    }));  
   }
+ 
   
-  mostrarNombre() { 
-    this.getPokemonDataID();
-  }
-
   mostrarDatos() {
-    this.api.getPokemonIName(this.pokemonName.toLowerCase()).subscribe((id => {
-      this.pokemonId1 = id;
-      this.api.getNameImageURL(this.pokemonName.toLowerCase()).subscribe((imageResponse => {
-        this.pokemonImageURL1 = imageResponse;
-  
-        // Corrección: Arreglo en la suscripció
-        this.api.getPokemonType(this.pokemonId1).subscribe((types: string[]) => {
-          this.pokemonType = types;
-        }, (error) => {
-          console.log(error);
+    if (isNaN(Number(this.pokemonNameOrId))) {
+        // Buscar por nombre
+        this.api.getPokemonIName(this.pokemonNameOrId.toLowerCase()).subscribe((id => {
+            this.pokemonId = id;
+            this.api.getNameImageURL(this.pokemonNameOrId.toLowerCase()).subscribe((imageResponse => {
+                this.pokemonImageURL = imageResponse;
+
+                this.api.getPokemonType(this.pokemonId).subscribe((types: string[]) => {
+                    this.pokemonType = types;
+
+                    // Llamar a enviarDatosAFirebase() aquí después de obtener el tipo del Pokémon
+                    this.enviarDatosAFirebase();
+                }, (error) => {
+                    console.log(error);
+                });
+
+            }), (error) => {
+                console.log(error);
+            });
+            this.nombrePokemon = this.pokemonNameOrId.charAt(0).toUpperCase() + this.pokemonNameOrId.slice(1);
+        }), (error) => {
+            console.log(error);
+            this.resetPokemonInfo();
         });
-  
-      }), (error) => {
-        console.log(error);
-      });
-      this.nombrePokemon1 = this.pokemonName.charAt(0).toUpperCase() + this.pokemonName.slice(1);
-    }), (error) => {
-      console.log(error);
-    });
-  }  
+    } else {
+        // Buscar por ID
+        this.pokemonId = Number(this.pokemonNameOrId);
+        this.api.getPokemonID(this.pokemonId).subscribe((response => {
+            this.nombrePokemon = response.name;
+
+            this.api.getPokemonImageURL(this.pokemonId).subscribe((imageResponse => {
+                this.pokemonImageURL = imageResponse;
+
+                this.api.getPokemonType(this.pokemonId).subscribe((types: string[]) => {
+                    this.pokemonType = types;
+
+                    // Llamar a enviarDatosAFirebase() aquí después de obtener el tipo del Pokémon
+                    this.enviarDatosAFirebase();
+                }, (error) => {
+                    console.log(error);
+                });
+
+            }), (error) => {
+                console.log(error);
+            });
+        }), (error) => {
+            console.log(error);
+            this.resetPokemonInfo();
+        });
+    }
 }
+  
+  resetPokemonInfo() {
+    this.pokemonId = 0;
+    this.nombrePokemon = "";
+    this.pokemonImageURL = "";
+    this.pokemonType = [];
+  }
+  async enviarDatosAFirebase() {
+    // Definir la ruta del documento en la colección 'Pokemones' con la estructura proporcionada
+    const ruta = doc(this.firestore, 'Pokemones', 'pokemon');
+
+    try {
+        // Establecer el tipo del Pokémon en Firebase
+        await setDoc(ruta, { tipo: this.pokemonType });
+        console.log('Tipo de Pokémon enviado exitosamente a Firebase');
+    } catch (error) {
+        console.error('Error al enviar el tipo de Pokémon a Firebase:', error);
+    }
+}
+  mostrarYEnviarDatos() {
+    this.mostrarDatos(); // Llama al método mostrarDatos() para obtener la información del Pokémon
+    this.enviarDatosAFirebase(); // Llama al método enviarDatosAFirebase() para enviar los datos a Firebase
+  }
+ }  
+
+
+ 
